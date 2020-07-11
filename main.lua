@@ -50,6 +50,10 @@ function love.update(dt)
 	groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt)
 	    % VIRTUAL_WIDTH
 
+    if love.keyboard.isDown('space') then
+    	bird:jump()
+    end
+
 	bird:update(dt)
 end
 
