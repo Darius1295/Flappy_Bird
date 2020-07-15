@@ -1,5 +1,8 @@
 Bird = Class{}
 
+local GRAVITY = 800
+local JUMP_VELOCITY = -200
+
 function Bird:init()
 	self.image = love.graphics.newImage('bird.png')
 	self.width = self.image:getWidth()
@@ -8,16 +11,16 @@ function Bird:init()
 	self.x = VIRTUAL_WIDTH/2 - self.width/2
 	self.y = VIRTUAL_HEIGHT/2 - self.height/2
 
-	self.dy = 0
+	self.dvy = 0
 end
 
 function Bird:update(dt)
-	self.dy = self.dy + 500 * dt
-	self.y = self.y + self.dy * dt
+	self.dvy = self.dvy + GRAVITY * dt
+	self.y = self.y + self.dvy * dt
 end
 
 function Bird:jump()
-	self.dy = -200
+	self.dvy = JUMP_VELOCITY
 end
 
 function Bird:render()

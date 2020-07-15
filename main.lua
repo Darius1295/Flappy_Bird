@@ -4,8 +4,10 @@ Class = require 'class'
 
 require 'Bird'
 
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+require 'Pipe'
+
+WINDOW_WIDTH = 1024
+WINDOW_HEIGHT = 576
 
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
@@ -21,6 +23,8 @@ local GROUND_SCROLL_SPEED = 60
 local BACKGROUND_LOOPING_POINT = 413
 
 local bird = Bird()
+local pipes = {}
+local spawnTimer = 0
 
 function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -54,12 +58,32 @@ function love.update(dt)
     	bird:jump()
     end
 
-	bird:update(dt)
+	spawnTimer = spawnTimer + dt
+    if spawnTimer > 2 then
+    	table.insert(pipes, Pipe())
+    	spawnTimer = 0
+    end
+
+    bird:update(dt)
+
+    for k, pipe in pairs(pipes) do
+    	pipe:update(dt)
+
+    	if pipe.x < -pipe.width then
+    		table.remove(pipes, k)
+    	end
+    end
 end
 
 function love.draw()
 	push:start()
+
     love.graphics.draw(background, -backgroundScroll, 0)
+
+    for k, pipe in pairs(pipes) do
+    	pipe:render()
+    end
+
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
 
     bird:render()
