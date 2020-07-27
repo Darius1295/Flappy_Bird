@@ -23,11 +23,12 @@ local groundScroll = 0
 local BACKGROUND_SCROLL_SPEED = 30
 local GROUND_SCROLL_SPEED = 60
 local BACKGROUND_LOOPING_POINT = 413
+local GROUND_LOOPING_POINT = 514
 
 local bird = Bird()
 local pipePairs = {}
 local spawnTimer = 0
-local lastY = -PIPE_HEIGHT + math.random(80) + 20
+local lastY = math.random(80) + 20
 
 function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -55,7 +56,7 @@ function love.update(dt)
 	backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt)
 	    % BACKGROUND_LOOPING_POINT
 	groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt)
-	    % VIRTUAL_WIDTH
+	    % GROUND_LOOPING_POINT
 
     if love.keyboard.isDown('space') then
     	bird:jump()
@@ -63,8 +64,7 @@ function love.update(dt)
 
 	spawnTimer = spawnTimer + dt
     if spawnTimer > 2 then    	
-    	local y = math.max(-PIPE_HEIGHT + 10, 
-            math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+    	local y = math.max(10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90))
         lastY = y
 
     	table.insert(pipePairs, PipePair(y))
