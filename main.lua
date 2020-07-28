@@ -21,7 +21,7 @@ local ground = love.graphics.newImage('ground.png')
 local groundScroll = 0
 
 local BACKGROUND_SCROLL_SPEED = 30
-local GROUND_SCROLL_SPEED = 60
+local GROUND_SCROLL_SPEED = 120
 local BACKGROUND_LOOPING_POINT = 413
 local GROUND_LOOPING_POINT = 514
 
@@ -63,8 +63,8 @@ function love.update(dt)
     end
 
 	spawnTimer = spawnTimer + dt
-    if spawnTimer > 2 then    	
-    	local y = math.max(10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90))
+    if spawnTimer > 1.5 then    	
+    	local y = math.max(10, math.min(lastY + math.random(-80, 80), VIRTUAL_HEIGHT - 90))
         lastY = y
 
     	table.insert(pipePairs, PipePair(y))
