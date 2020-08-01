@@ -29,6 +29,7 @@ local bird = Bird()
 local pipePairs = {}
 local spawnTimer = 0
 local lastY = math.random(80) + 20
+local scrolling = true
 
 function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -53,36 +54,47 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-	backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt)
-	    % BACKGROUND_LOOPING_POINT
-	groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt)
-	    % GROUND_LOOPING_POINT
+	if scrolling then
+		backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt)
+		    % BACKGROUND_LOOPING_POINT
+		groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt)
+		    % GROUND_LOOPING_POINT
 
-    if love.keyboard.isDown('space') then
-    	bird:jump()
+	    if love.keyboard.isDown('space') then
+	    	bird:jump()
+	    end
+
+		spawnTimer = spawnTimer + dt
+	    if spawnTimer > 1.5 then    	
+	    	local y = math.max(10, math.min(lastY + math.random(-80, 80), VIRTUAL_HEIGHT - 90))
+	        lastY = y
+
+	    	table.insert(pipePairs, PipePair(y))
+	    	spawnTimer = 0
+	    end
+
+	    bird:update(dt)
+
+	    for k, pair in pairs(pipePairs) do
+	    	pair:update(dt)
+	    end
+
+	    for k, pair in pairs(pipePairs) do
+	        if pair.remove then
+	            table.remove(pipePairs, k)
+	        end
+	    end
+
+	    for k, pair in pairs(pipePairs) do
+	    	if bird:collides(pair) then
+	    		scrolling = false
+	    	end
+	    end
+
+	    if bird.y + bird.height > VIRTUAL_HEIGHT - 16 then
+	    	scrolling = false
+	    end
     end
-
-	spawnTimer = spawnTimer + dt
-    if spawnTimer > 1.5 then    	
-    	local y = math.max(10, math.min(lastY + math.random(-80, 80), VIRTUAL_HEIGHT - 90))
-        lastY = y
-
-    	table.insert(pipePairs, PipePair(y))
-    	spawnTimer = 0
-    end
-
-    bird:update(dt)
-
-    for k, pipe in pairs(pipePairs) do
-    	pipe:update(dt)
-    end
-
-    for k, pair in pairs(pipePairs) do
-        if pair.remove then
-            table.remove(pipePairs, k)
-        end
-    end
-
 end
 
 function love.draw()
