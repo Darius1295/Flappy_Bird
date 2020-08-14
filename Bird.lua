@@ -34,3 +34,11 @@ function Bird:collides(pair)
 
     return false
 end 
+
+function Bird:scores(pair)
+    if self.x > pair.x + PIPE_WIDTH then
+    	return true
+    end
+
+    return false
+end
