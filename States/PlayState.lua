@@ -46,7 +46,7 @@ function PlayState:update(dt)
 
     for k, pair in pairs(self.pipePairs) do
     	if self.bird:collides(pair) then
-    		gStateMachine:change('title')
+    		gStateMachine:change('end', {score = self.score})
     	end
     end
 
@@ -60,7 +60,7 @@ function PlayState:update(dt)
     end
 
     if self.bird.y + self.bird.height > VIRTUAL_HEIGHT - 16 then
-    	gStateMachine:change('title')
+    	gStateMachine:change('end', {score = self.score})
     end
 end
 
