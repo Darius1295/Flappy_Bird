@@ -44,6 +44,13 @@ function love.load()
     hugeFont = love.graphics.newFont('flappy.ttf', 56)
     love.graphics.setFont(flappyFont)
 
+    sounds = {
+        ['jump'] = love.audio.newSource('Sounds/jump.wav', 'static'),
+        ['explosion'] = love.audio.newSource('Sounds/explosion.wav', 'static'),
+        ['hurt'] = love.audio.newSource('Sounds/hurt.wav', 'static'),
+        ['score'] = love.audio.newSource('Sounds/score.wav', 'static'),
+    }
+
 	push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
 		vsync = true,
 		fullscreen = false,

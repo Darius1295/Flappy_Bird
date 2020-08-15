@@ -20,6 +20,7 @@ end
 
 function PlayState:update(dt)
     if love.keyboard.isDown('space') then
+    	sounds['jump']:play()
     	self.bird:jump()
     end
 
@@ -46,6 +47,8 @@ function PlayState:update(dt)
 
     for k, pair in pairs(self.pipePairs) do
     	if self.bird:collides(pair) then
+    		sounds['explosion']:play()
+    		sounds['hurt']:play()
     		gStateMachine:change('end', {score = self.score})
     	end
     end
@@ -53,6 +56,7 @@ function PlayState:update(dt)
     for k, pair in pairs(self.pipePairs) do
     	if not pair.scored then
 	    	if self.bird:scores(pair) then
+	    		sounds['score']:play()
 	            self.score = self.score + 1
 	            pair.scored = true
 	        end
@@ -60,6 +64,8 @@ function PlayState:update(dt)
     end
 
     if self.bird.y + self.bird.height > VIRTUAL_HEIGHT - 16 then
+    	sounds['explosion']:play()
+    	sounds['hurt']:play()
     	gStateMachine:change('end', {score = self.score})
     end
 end
